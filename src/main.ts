@@ -13,12 +13,13 @@ async function bootstrap() {
       transform: true,         
   }));
   setupSwagger(app);
-
-  await app.listen(process.env.PORT ?? 3000);
+  app.enableCors();
+  const PORT = process.env.PORT || 8080;
+  await app.listen(PORT, '0.0.0.0');
   
-  console.log(`Application is running on: http://localhost:${process.env.PORT ?? 3000}`);
+  console.log(`Application is running on: http://localhost:${PORT}`);
   if (process.env.NODE_ENV !== 'production') {
-    console.log(`Swagger docs available at http://localhost:${process.env.PORT ?? 3000}/docs`);
+    console.log(`Swagger docs available at http://localhost:${PORT}/docs`);
   }
 }
 bootstrap();
