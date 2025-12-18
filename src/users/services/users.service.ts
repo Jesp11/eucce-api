@@ -1,10 +1,12 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { UsersRepository } from './repository/users.repository';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserResponse } from './dto/user-response.dto';
-import { BCRYPT_SALT_ROUNDS } from './constants/bcrypt.constants';
+import { UsersRepository } from '../repository/users.repository';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { UserResponse } from '../dto/user-response.dto';
+import { BCRYPT_SALT_ROUNDS } from '../constants/bcrypt.constants';
 import * as bcrypt from 'bcrypt';
+import { UserRole } from '../../common/enums/role.enum';
+import { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_PHONE } from '../constants/user-admin.constants';
 
 @Injectable()
 export class UsersService {
@@ -57,5 +59,30 @@ export class UsersService {
     private async hashPassword(password: string): Promise<string> {
         const saltRounds = Number(BCRYPT_SALT_ROUNDS);
         return bcrypt.hash(password, saltRounds);
+    }
+
+    async getAdmins() {
+        return this.usersRepository.find({ where: { role: UserRole.ADMIN } });
+    }
+
+    async createUserAdmin(): Promise<Boolean | null> {
+        if (await this.usersRepository.validateField('email', ADMIN_EMAIL)) {
+            throw new ConflictException(`El email ${ADMIN_EMAIL} ya está en uso.`);
+        }
+        if (await this.usersRepository.validateField('phone', ADMIN_PHONE)) {
+            throw new ConflictException(`El teléfono ${ADMIN_PHONE} ya está en uso.`);
+        }
+        const hashedPassword = await this.hashPassword(ADMIN_PASSWORD);
+        
+        const adminDto: CreateUserDto = {
+            email: ADMIN_EMAIL,
+            password: hashedPassword,
+            phone: ADMIN_PHONE,
+            role: UserRole.ADMIN,
+        };
+
+        const result = await this.usersRepository.createUser(adminDto);
+
+        return result ? true : false;
     }
 }

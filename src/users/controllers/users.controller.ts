@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
-import { UsersService } from '../users.service';
+import { UsersService } from '../services/users.service';
 import { ApiOperation, ApiParam} from '@nestjs/swagger';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserResponse } from '../dto/user-response.dto';
