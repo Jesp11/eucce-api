@@ -26,6 +26,6 @@ export class AuthController {
   @ApiOperation({ summary: 'Perfil del usuario autenticado' })
   @ApiBearerAuth()
   async profile(@Req() req): Promise<UserResponse | null> {
-    return this.usersRepository.findUserById(req.user.id);
+    return this.usersRepository.findUserById(req.user.userId);
   }
 }

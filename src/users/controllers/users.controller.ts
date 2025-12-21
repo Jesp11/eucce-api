@@ -31,8 +31,8 @@ export class UsersController {
     return this.usersService.getUserById(id);
   }
 
-  @ApiOperation({ summary: 'Create user' })
-  @ProtectedRoles(UserRole.ADMIN, UserRole.USER)
+  @ApiOperation({ summary: 'Create user, request from web' })
+  @ProtectedRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<UserResponse> {
     return this.usersService.createUser(dto);

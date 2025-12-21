@@ -19,7 +19,7 @@ export class UsersRepository {
         return this.repository.findOneBy({ id });
     }
 
-    async createUser(data: CreateUserDto): Promise<UserResponse> {
+    async createUser(data: CreateUserDto | Partial<CreateUserDto>): Promise<UserResponse> {
         const newUser = this.repository.create(data);
         return this.repository.save(newUser);
     }

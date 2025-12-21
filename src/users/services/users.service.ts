@@ -24,6 +24,10 @@ export class UsersService {
     }
 
     async createUser(dto: CreateUserDto) {
+        if (dto.password !== dto.confirmPassword) {
+            throw new ConflictException('La contraseña y la confirmación de la contraseña no coinciden.');
+        }
+
         if (await this.usersRepository.validateField('email', dto.email)) {
             throw new ConflictException(`El email ${dto.email} ya está en uso.`);
         }
@@ -74,7 +78,7 @@ export class UsersService {
         }
         const hashedPassword = await this.hashPassword(ADMIN_PASSWORD);
         
-        const adminDto: CreateUserDto = {
+        const adminDto: Partial<CreateUserDto> = {
             email: ADMIN_EMAIL,
             password: hashedPassword,
             phone: ADMIN_PHONE,

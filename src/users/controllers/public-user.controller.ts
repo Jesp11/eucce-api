@@ -12,9 +12,9 @@ export class PublicUsersController {
     constructor(private readonly usersService: UsersService) {}
 
     //Create user
-    @ApiOperation({ summary: 'Create a new user' })
+    @ApiOperation({ summary: 'Create a new user from app' })
     @ApiCreatedResponse({ description: 'The user has been successfully created.' })
-    @Post()
+    @Post("/public")
     async createUser(@Body() dto: CreateUserDto): Promise<UserResponse> {
         return this.usersService.createUser(dto);
     }

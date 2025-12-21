@@ -11,7 +11,7 @@ export class LoginDto {
     email: string;
    
     @ApiProperty({
-        example: '80012345678',
+        example: '8001234567',
         description: 'Teléfono del usuario',
     })
     @IsString({ message: 'El teléfono debe ser una cadena de texto' })
@@ -27,14 +27,4 @@ export class LoginDto {
     @MinLength(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
     @IsNotEmpty({ message: 'La contraseña es requerida' })
     password: string;
-
-    @ApiProperty({
-        example: 'Password123!',
-        description: 'Confirmación de la contraseña del usuario',
-        minLength: 8,
-    })
-    @IsString({ message: 'La confirmación de la contraseña debe ser una cadena de texto' })
-    @MinLength(8, { message: 'La confirmación de la contraseña debe tener al menos 8 caracteres' })
-    @IsNotEmpty({ message: 'La confirmación de la contraseña es requerida' })
-    confirmPassword: string;
 }
